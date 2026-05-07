@@ -337,10 +337,44 @@ body {
 .sql-result th { background: rgba(124,92,252,.1); color: var(--accent); }
 
 /* Responsive */
+/* Mobile menu toggle button */
+.mobile-menu-btn {
+  display: none;
+  background: none; border: 1px solid var(--border);
+  color: var(--text); font-size: 1.3rem;
+  padding: 4px 10px; border-radius: 6px;
+  cursor: pointer;
+}
+.sidebar-overlay {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,.5); z-index: 90;
+}
+
 @media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main { padding: 16px; }
-  .fde-visual { grid-template-columns: 1fr; }
+  .mobile-menu-btn { display: block; }
+  .topbar { padding: 10px 14px; }
+  .topbar h1 { font-size: .95rem; }
+  .exam-timer { font-size: .78rem; padding: 4px 10px; }
+
+  .sidebar {
+    position: fixed; top: 56px; left: -280px;
+    width: 260px; min-width: 260px;
+    height: calc(100vh - 56px);
+    z-index: 95;
+    transition: left .25s ease;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-overlay.open { display: block; }
+
+  .main { padding: 14px; max-width: 100%; }
+  .topic-card { padding: 16px; }
+  .game-zone { padding: 16px; }
+  .fde-visual { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .flashcard { height: 180px; }
+  .quiz-opt { padding: 10px 12px; font-size: .84rem; }
+  .highlight-box { font-size: .82rem; padding: 10px 12px; }
+  .score-bar { gap: 8px; flex-wrap: wrap; }
 }
 
 /* Tab buttons for game modes */

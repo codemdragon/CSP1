@@ -8,9 +8,11 @@
 </head>
 <body>
   <div class="topbar">
+    <button class="mobile-menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
     <h1>⚡ <span>CS 9618</span> Exam Crammer</h1>
     <div class="exam-timer"><div class="dot"></div><span id="examTimer">--:--:--</span> until exam</div>
   </div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
   <div class="container">
     <nav class="sidebar" id="sidebar"></nav>
     <main class="main" id="mainContent">

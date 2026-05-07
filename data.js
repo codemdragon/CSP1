@@ -1,4 +1,102 @@
 const TOPICS = [
+{id:"numsys",icon:"🔢",title:"Number Systems",notes:`
+<h3>Number Bases</h3>
+<ul>
+<li><strong>Denary (Base-10)</strong> – Digits 0-9. What humans use.</li>
+<li><strong>Binary (Base-2)</strong> – Digits 0 and 1 (bits). What computers use.</li>
+<li><strong>Hexadecimal (Base-16)</strong> – Digits 0-9 + A-F. Shorthand for binary (1 hex = 4 bits).</li>
+</ul>
+
+<h3>Conversions</h3>
+<div class="highlight-box">
+<strong>Binary → Denary:</strong> Add place values where bit = 1<br>
+e.g. <code>1101</code> = 8+4+0+1 = <strong>13</strong><br><br>
+<strong>Denary → Binary:</strong> Divide by 2 repeatedly, read remainders bottom-up<br>
+e.g. 25 → 12r1 → 6r0 → 3r0 → 1r1 → 0r1 = <code>11001</code><br><br>
+<strong>Hex ↔ Binary:</strong> Each hex digit = 4-bit nibble<br>
+e.g. <code>A3</code> = <code>1010 0011</code>
+</div>
+
+<h3>Place Value Diagram</h3>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:.82rem;margin:10px 0">
+<tr style="background:rgba(124,92,252,.12)">
+<th style="padding:6px 10px;border:1px solid var(--border)">2⁷</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2⁶</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2⁵</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2⁴</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2³</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2²</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2¹</th>
+<th style="padding:6px 10px;border:1px solid var(--border)">2⁰</th>
+</tr>
+<tr style="text-align:center;color:var(--accent2)">
+<td style="padding:6px;border:1px solid var(--border)">128</td>
+<td style="padding:6px;border:1px solid var(--border)">64</td>
+<td style="padding:6px;border:1px solid var(--border)">32</td>
+<td style="padding:6px;border:1px solid var(--border)">16</td>
+<td style="padding:6px;border:1px solid var(--border)">8</td>
+<td style="padding:6px;border:1px solid var(--border)">4</td>
+<td style="padding:6px;border:1px solid var(--border)">2</td>
+<td style="padding:6px;border:1px solid var(--border)">1</td>
+</tr>
+</table>
+</div>
+
+<h3>Unsigned Integers</h3>
+<ul>
+<li>Only positive values. Range for n bits: <strong>0</strong> to <strong>2ⁿ − 1</strong></li>
+<li>8 bits → 0 to 255 | 16 bits → 0 to 65535</li>
+</ul>
+
+<h3>Signed Integers – Two's Complement</h3>
+<div class="highlight-box">
+<strong>MSB (leftmost bit) is NEGATIVE</strong> → value = −2ⁿ⁻¹<br>
+Range for n bits: <strong>−2ⁿ⁻¹</strong> to <strong>2ⁿ⁻¹ − 1</strong><br>
+8 bits → −128 to +127<br><br>
+<strong>To negate (find negative):</strong><br>
+1. Flip ALL bits (0↔1)<br>
+2. Add 1<br><br>
+Example: +5 = <code>00000101</code><br>
+Flip → <code>11111010</code> → Add 1 → <code>11111011</code> = −5 ✓
+</div>
+<ul>
+<li>✅ Only ONE representation for zero</li>
+<li>✅ Subtraction = just add the negative</li>
+</ul>
+
+<h3>Binary Coded Decimal (BCD)</h3>
+<ul>
+<li>Each <strong>denary digit</strong> → its own 4-bit nibble</li>
+<li><strong>Packed BCD:</strong> 2 digits per byte</li>
+<li>Example: 39 → <code>0011 1001</code> (not the same as binary 39!)</li>
+<li><strong>Uses:</strong> Calculators, electronic displays, currency (avoids rounding errors)</li>
+</ul>
+
+<h3>Binary Shifts</h3>
+<div class="highlight-box">
+<strong>Logical Left Shift:</strong> Bits move left, 0 fills right. Multiplies by 2 per shift.<br>
+<code>00001100</code> ← shift 1 → <code>00011000</code> (12 → 24)<br><br>
+<strong>Logical Right Shift:</strong> Bits move right, 0 fills left. Divides by 2 per shift.<br>
+<code>00001100</code> → shift 1 → <code>00000110</code> (12 → 6)<br><br>
+<strong>Arithmetic Right Shift:</strong> Preserves sign bit (MSB stays). Used for signed numbers.
+</div>
+
+<h3>Overflow</h3>
+<p>When a calculation result exceeds available bits. e.g. 8-bit unsigned: 200 + 100 = 300 → exceeds 255 → <strong>overflow!</strong></p>`,
+quiz:[
+{q:"What is the denary value of binary 1011?",opts:["9","11","13","10"],ans:1,exp:"1011 = 8+0+2+1 = 11"},
+{q:"In two's complement, the MSB represents:",opts:["The largest positive value","A negative value","Zero","Overflow flag"],ans:1,exp:"In two's complement, the MSB has a negative weight (−2ⁿ⁻¹)."},
+{q:"To negate in two's complement you:",opts:["Flip bits only","Flip bits then add 1","Subtract from 0","Add 1 then flip"],ans:1,exp:"Negate = flip all bits (1↔0) then add 1."},
+{q:"BCD for denary 47 is:",opts:["00101111","01000111","0100 0111","101111"],ans:2,exp:"BCD: 4=0100, 7=0111, so 47 = 0100 0111"},
+{q:"A logical LEFT shift by 1 does what?",opts:["Divides by 2","Multiplies by 2","Adds 1","Subtracts 1"],ans:1,exp:"Left shift = multiply by 2. Each position moved left doubles the value."},
+{q:"8-bit unsigned integer range is:",opts:["0 to 128","0 to 255","-128 to 127","0 to 256"],ans:1,exp:"8-bit unsigned: 0 to 2⁸−1 = 0 to 255."},
+{q:"8-bit two's complement range is:",opts:["0 to 255","-128 to 127","-127 to 128","-256 to 255"],ans:1,exp:"8-bit two's complement: −2⁷ to 2⁷−1 = −128 to 127."},
+{q:"Hex A3 in binary is:",opts:["10100011","10110011","10100010","11000011"],ans:0,exp:"A=1010, 3=0011, so A3 = 10100011."},
+{q:"Packed BCD stores ___ digits per byte.",opts:["1","2","4","8"],ans:1,exp:"Packed BCD = 2 denary digits per byte (4 bits each)."},
+{q:"A right shift by 2 divides by:",opts:["2","4","8","16"],ans:1,exp:"Each right shift divides by 2, so 2 shifts = divide by 2² = 4."}
+]},
+
 {id:"comm",icon:"🌐",title:"Networks & Topologies",notes:`
 <h3>Network Types</h3>
 <ul>
@@ -286,27 +384,101 @@ quiz:[
 <ul>
 <li><strong>ASCII</strong> – 7-bit (128 chars) or 8-bit Extended (256)</li>
 <li><strong>Unicode</strong> – Variable-length (UTF-8), supports ALL world languages</li>
+<li>ASCII is a subset of Unicode</li>
 </ul>
-<h3>Images</h3>
+
+<h3>Bitmap Images</h3>
+<p>Image = grid of pixels, each pixel stored as a binary colour value.</p>
+<div style="overflow-x:auto">
+<svg viewBox="0 0 400 120" style="width:100%;max-width:400px;margin:10px auto;display:block">
+<rect x="0" y="0" width="400" height="120" fill="none"/>
+<!-- pixel grid -->
+<rect x="10" y="10" width="20" height="20" fill="#7c5cfc" stroke="#2a2a3a"/>
+<rect x="30" y="10" width="20" height="20" fill="#5ce1e6" stroke="#2a2a3a"/>
+<rect x="50" y="10" width="20" height="20" fill="#7c5cfc" stroke="#2a2a3a"/>
+<rect x="70" y="10" width="20" height="20" fill="#4ade80" stroke="#2a2a3a"/>
+<rect x="90" y="10" width="20" height="20" fill="#5ce1e6" stroke="#2a2a3a"/>
+<rect x="10" y="30" width="20" height="20" fill="#4ade80" stroke="#2a2a3a"/>
+<rect x="30" y="30" width="20" height="20" fill="#f87171" stroke="#2a2a3a"/>
+<rect x="50" y="30" width="20" height="20" fill="#5ce1e6" stroke="#2a2a3a"/>
+<rect x="70" y="30" width="20" height="20" fill="#7c5cfc" stroke="#2a2a3a"/>
+<rect x="90" y="30" width="20" height="20" fill="#f87171" stroke="#2a2a3a"/>
+<rect x="10" y="50" width="20" height="20" fill="#5ce1e6" stroke="#2a2a3a"/>
+<rect x="30" y="50" width="20" height="20" fill="#7c5cfc" stroke="#2a2a3a"/>
+<rect x="50" y="50" width="20" height="20" fill="#4ade80" stroke="#2a2a3a"/>
+<rect x="70" y="50" width="20" height="20" fill="#f87171" stroke="#2a2a3a"/>
+<rect x="90" y="50" width="20" height="20" fill="#4ade80" stroke="#2a2a3a"/>
+<text x="130" y="25" fill="#e0e0e8" font-size="11" font-family="Inter">← Each square = 1 pixel</text>
+<text x="130" y="45" fill="#8888aa" font-size="11" font-family="Inter">Resolution = 5×3 = 15 pixels</text>
+<text x="130" y="65" fill="#8888aa" font-size="11" font-family="Inter">Colour depth = bits per pixel</text>
+<text x="10" y="100" fill="#5ce1e6" font-size="12" font-family="JetBrains Mono" font-weight="bold">File Size = Resolution × Colour Depth</text>
+</svg>
+</div>
+<div class="highlight-box">
+<strong>📐 Bitmap Formula:</strong><br>
+<code>File Size = Width × Height × Colour Depth</code><br>
+e.g. 800×600 image, 24-bit colour = 800×600×24 = 11,520,000 bits = <strong>1.44 MB</strong>
+</div>
+
+<h3>Vector Graphics</h3>
 <ul>
-<li><strong>Bitmap</strong> – Grid of pixels. File size = resolution × colour depth</li>
-<li><strong>Vector</strong> – Objects defined by geometric properties. Scales without quality loss.</li>
+<li>Stored as geometric objects (lines, circles, polygons) with properties (coordinates, fill, stroke)</li>
+<li><strong>Key advantage:</strong> Scales without quality loss (no pixelation)</li>
+<li>Smaller file size for simple images; larger for complex</li>
 </ul>
-<h3>Sound</h3>
-<ul>
-<li><strong>Sampling Rate</strong> – Samples per second (Hz). Higher = better quality.</li>
-<li><strong>Sampling Resolution</strong> – Bits per sample. More bits = more accurate.</li>
-</ul>
+
+<h3>Sound Representation</h3>
+<p>Analogue sound wave is sampled at regular intervals to create digital approximation.</p>
+<div style="overflow-x:auto">
+<svg viewBox="0 0 400 130" style="width:100%;max-width:400px;margin:10px auto;display:block">
+<!-- wave -->
+<path d="M10,65 Q50,10 90,65 Q130,120 170,65 Q210,10 250,65 Q290,120 330,65 Q370,10 390,45" fill="none" stroke="#7c5cfc" stroke-width="2" opacity="0.4"/>
+<!-- sample points -->
+<line x1="30" y1="10" x2="30" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="70" y1="10" x2="70" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="110" y1="10" x2="110" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="150" y1="10" x2="150" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="190" y1="10" x2="190" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="230" y1="10" x2="230" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="270" y1="10" x2="270" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="310" y1="10" x2="310" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<line x1="350" y1="10" x2="350" y2="120" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="3"/>
+<circle cx="30" cy="42" r="4" fill="#5ce1e6"/>
+<circle cx="70" cy="22" r="4" fill="#5ce1e6"/>
+<circle cx="110" cy="88" r="4" fill="#5ce1e6"/>
+<circle cx="150" cy="105" r="4" fill="#5ce1e6"/>
+<circle cx="190" cy="40" r="4" fill="#5ce1e6"/>
+<circle cx="230" cy="20" r="4" fill="#5ce1e6"/>
+<circle cx="270" cy="95" r="4" fill="#5ce1e6"/>
+<circle cx="310" cy="100" r="4" fill="#5ce1e6"/>
+<circle cx="350" cy="30" r="4" fill="#5ce1e6"/>
+<!-- step reconstruction -->
+<polyline points="30,42 70,42 70,22 110,22 110,88 150,88 150,105 190,105 190,40 230,40 230,20 270,20 270,95 310,95 310,100 350,100 350,30" fill="none" stroke="#4ade80" stroke-width="1.5"/>
+<text x="10" y="130" fill="#8888aa" font-size="9" font-family="Inter">● = sample points | Green = digital reconstruction</text>
+</svg>
+</div>
+<div class="highlight-box">
+<strong>📐 Sound File Size Formula:</strong><br>
+<code>File Size = Sampling Rate × Resolution × Duration</code><br>
+e.g. 44,100 Hz × 16 bits × 3 sec = 2,116,800 bits = <strong>~265 KB</strong><br><br>
+<strong>Sampling Rate</strong> = samples/second (Hz). Higher → better quality, bigger file.<br>
+<strong>Sampling Resolution</strong> = bits/sample. More bits → more accurate amplitude.
+</div>
+
 <h3>Compression</h3>
 <ul>
-<li><strong>Lossless</strong> – Perfect reconstruction (RLE, Huffman coding)</li>
-<li><strong>Lossy</strong> – Some data discarded permanently (JPEG, MP3)</li>
+<li><strong>Lossless</strong> – Perfect reconstruction. RLE (Run Length Encoding), Huffman coding.</li>
+<li><strong>Lossy</strong> – Data permanently discarded. JPEG (images), MP3 (audio). Smaller files.</li>
+<li><strong>RLE example:</strong> AAABBBCC → 3A3B2C</li>
 </ul>`,
 quiz:[
 {q:"Unicode vs ASCII – which supports more characters?",opts:["ASCII","Unicode","Both the same","Neither"],ans:1,exp:"Unicode supports virtually all world languages. ASCII only covers 128/256 characters."},
 {q:"Vector graphics advantage over bitmap:",opts:["Smaller colour depth","Scales without quality loss","Faster to render","Uses pixels"],ans:1,exp:"Vectors use mathematical descriptions of shapes, so they scale perfectly at any size."},
 {q:"Higher sampling rate means:",opts:["Larger file, lower quality","Smaller file","Larger file, better quality","No difference"],ans:2,exp:"More samples per second = more accurate sound reproduction, but larger file size."},
 {q:"RLE is a type of ___ compression.",opts:["Lossy","Lossless"],ans:1,exp:"RLE (Run Length Encoding) is lossless – original data can be perfectly reconstructed."},
-{q:"Bitmap file size depends on:",opts:["Only resolution","Only colour depth","Resolution × colour depth","File format only"],ans:2,exp:"Bitmap size = width × height × colour depth (bits per pixel)."}
+{q:"Bitmap file size depends on:",opts:["Only resolution","Only colour depth","Resolution × colour depth","File format only"],ans:2,exp:"Bitmap size = width × height × colour depth (bits per pixel)."},
+{q:"Sound file size = Sampling Rate × ___ × Duration",opts:["Colour depth","Frequency","Resolution (bits/sample)","Amplitude"],ans:2,exp:"Sound file size = sampling rate × sampling resolution (bits per sample) × duration."},
+{q:"Lossy compression:",opts:["Can perfectly reconstruct original","Permanently discards some data","Is always bigger","Uses RLE"],ans:1,exp:"Lossy permanently removes data for smaller size – original cannot be recovered."},
+{q:"An 800×600 bitmap with 8-bit colour depth has file size:",opts:["480,000 bytes","3,840,000 bits","3,840,000 bytes","480,000 bits"],ans:1,exp:"800×600×8 = 3,840,000 bits = 480,000 bytes (÷8)."}
 ]}
 ];

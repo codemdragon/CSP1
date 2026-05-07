@@ -2,6 +2,17 @@
 (function() {
   const sidebar = document.getElementById('sidebar');
   const main = document.getElementById('mainContent');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  // Mobile menu toggle
+  window.toggleMenu = function() {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  };
+  function closeMobileMenu() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  }
 
   // Exam timer (set your exam date here)
   function startExamTimer() {
@@ -49,6 +60,7 @@
     const t = TOPICS.find(x => x.id === id);
     if (!t) return;
     setActive(id);
+    closeMobileMenu();
 
     main.innerHTML = `
       <div class="topic-card fade-in">
@@ -81,6 +93,7 @@
   // Speed round
   window.loadSpeed = function() {
     setActive('speed');
+    closeMobileMenu();
     main.innerHTML = `
       <div class="game-zone fade-in">
         <h2>⚡ Speed Round</h2>
@@ -93,6 +106,7 @@
   // FDE Simulator
   window.loadFDESim = function() {
     setActive('fde-sim');
+    closeMobileMenu();
     main.innerHTML = `
       <div class="game-zone fade-in">
         <h2>🔄 FDE Cycle Simulator</h2>
@@ -105,6 +119,7 @@
   // SQL Lab
   window.loadSQLLab = function() {
     setActive('sql-lab');
+    closeMobileMenu();
     main.innerHTML = `
       <div class="game-zone fade-in">
         <h2>💻 SQL Challenge</h2>
