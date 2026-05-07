@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS 9618 – Exam Crammer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>⚡ <span>CS 9618</span> Exam Crammer</h1>
+    <div class="exam-timer"><div class="dot"></div><span id="examTimer">--:--:--</span> until exam</div>
+  </div>
+  <div class="container">
+    <nav class="sidebar" id="sidebar"></nav>
+    <main class="main" id="mainContent">
+      <div class="topic-card fade-in" style="text-align:center;padding:48px">
+        <h2>👋 Welcome! Pick a topic from the sidebar</h2>
+        <p style="margin-top:8px">Each topic has notes + interactive mini-games to test yourself.</p>
+      </div>
+    </main>
+  </div>
+  <script src="data.js"></script>
+  <script src="games.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
