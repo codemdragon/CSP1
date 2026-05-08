@@ -36,7 +36,9 @@
 
   // Build sidebar
   function buildSidebar() {
-    let html = `<div class="section-label">📚 Topics</div>`;
+    let html = `<div style="padding:8px 12px"><input type="text" class="search-input" id="searchBox" placeholder="🔍 Search all topics..." oninput="doSearch(this.value)"></div>`;
+    html += `<div id="sidebarLinks">`;
+    html += `<div class="section-label">📚 Topics</div>`;
     TOPICS.forEach(t => {
       html += `<button data-id="${t.id}" onclick="loadTopic('${t.id}')">
         <span class="icon">${t.icon}</span>${t.title}
@@ -46,9 +48,58 @@
     html += `<button data-id="speed" onclick="loadSpeed()"><span class="icon">⚡</span>Speed Round</button>`;
     html += `<button data-id="fde-sim" onclick="loadFDESim()"><span class="icon">🔄</span>FDE Simulator</button>`;
     html += `<button data-id="sql-lab" onclick="loadSQLLab()"><span class="icon">💻</span>SQL Challenge</button>`;
+    html += `</div>`;
     sidebar.innerHTML = html;
   }
   buildSidebar();
+
+  // Search
+  window.doSearch = function(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      // Show all sidebar buttons again
+      sidebar.querySelectorAll('#sidebarLinks button').forEach(b => b.style.display = '');
+      return;
+    }
+    // Filter sidebar buttons
+    sidebar.querySelectorAll('#sidebarLinks button').forEach(b => {
+      const id = b.dataset.id;
+      const topic = TOPICS.find(t => t.id === id);
+      if (!topic) { b.style.display = ''; return; }
+      const inTitle = topic.title.toLowerCase().includes(q);
+      const inNotes = topic.notes.replace(/<[^>]+>/g,' ').toLowerCase().includes(q);
+      b.style.display = (inTitle || inNotes) ? '' : 'none';
+    });
+    // Show search results in main
+    let results = [];
+    TOPICS.forEach(t => {
+      const plain = t.notes.replace(/<[^>]+>/g,' ').replace(/&[a-z]+;/g,' ');
+      const idx = plain.toLowerCase().indexOf(q);
+      if (idx !== -1 || t.title.toLowerCase().includes(q)) {
+        let snippet = '';
+        if (idx !== -1) {
+          const start = Math.max(0, idx - 60);
+          const end = Math.min(plain.length, idx + q.length + 60);
+          snippet = (start > 0 ? '...' : '') +
+            plain.substring(start, idx) +
+            '<mark style="background:var(--accent);color:#fff;padding:0 3px;border-radius:3px">' +
+            plain.substring(idx, idx + q.length) + '</mark>' +
+            plain.substring(idx + q.length, end) +
+            (end < plain.length ? '...' : '');
+        }
+        results.push({topic: t, snippet});
+      }
+    });
+    if (results.length) {
+      main.innerHTML = `<div class="topic-card fade-in"><h2>🔍 Search results for "${query}"</h2><p style="color:var(--text2);margin-bottom:12px">${results.length} topic(s) found</p>` +
+        results.map(r => `<div style="padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="loadTopic('${r.topic.id}')">
+          <strong>${r.topic.icon} ${r.topic.title}</strong>
+          <p style="font-size:.82rem;color:var(--text2);margin-top:4px">${r.snippet}</p>
+        </div>`).join('') + '</div>';
+    } else {
+      main.innerHTML = `<div class="topic-card fade-in" style="text-align:center;padding:32px"><h2>😕 No results for "${query}"</h2></div>`;
+    }
+  };
 
   // Active sidebar
   function setActive(id) {

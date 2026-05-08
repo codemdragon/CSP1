@@ -73,6 +73,17 @@ body {
 .sidebar button:hover { background: var(--surface2); color: var(--text); }
 .sidebar button.active { color: var(--accent); background: rgba(124,92,252,.08); border-right: 2px solid var(--accent); }
 .sidebar button .icon { font-size: 1.1rem; width: 24px; text-align: center; }
+.search-input {
+  width: 100%; padding: 8px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: .82rem;
+  outline: none;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: var(--accent); }
 
 /* Main Content */
 .main { flex: 1; padding: 28px 36px; max-width: 960px; }

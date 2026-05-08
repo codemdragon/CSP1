@@ -166,6 +166,10 @@ const Games = {
       {task:"Update the Age to 20 for student named 'Sara'", answer:"UPDATE Students SET Age = 20 WHERE Name = 'Sara'", hint:"UPDATE table SET col = val WHERE condition"},
       {task:"Select Name from Students ORDER BY Age descending", answer:"SELECT Name FROM Students ORDER BY Age DESC", hint:"... ORDER BY col DESC"},
       {task:"Create a table 'Courses' with CourseID (INT, PRIMARY KEY) and CourseName (VARCHAR)", answer:"CREATE TABLE Courses (CourseID INT PRIMARY KEY, CourseName VARCHAR)", hint:"CREATE TABLE name (col type, ...)"},
+      {task:"Add a column 'Email' (VARCHAR) to the 'Students' table", answer:"ALTER TABLE Students ADD Email VARCHAR", hint:"ALTER TABLE table ADD col type"},
+      {task:"Drop the 'Courses' table entirely", answer:"DROP TABLE Courses", hint:"DROP TABLE tablename"},
+      {task:"Select Student Name and Department Name using INNER JOIN (Students has DeptID, Departments has DeptID and DeptName)", answer:"SELECT Students.Name, Departments.DeptName FROM Students INNER JOIN Departments ON Students.DeptID = Departments.DeptID", hint:"SELECT t1.col, t2.col FROM t1 INNER JOIN t2 ON t1.fk = t2.pk"},
+      {task:"Create table 'Enrolments' with StudentID (INT), CourseID (INT), and a FOREIGN KEY on StudentID referencing Students(StudentID)", answer:"CREATE TABLE Enrolments (StudentID INT, CourseID INT, FOREIGN KEY (StudentID) REFERENCES Students(StudentID))", hint:"... FOREIGN KEY (col) REFERENCES Table(col)"},
     ];
     let idx = 0, score = 0;
     const render = () => {

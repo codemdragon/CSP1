@@ -202,25 +202,77 @@ quiz:[
 <li><strong>Table (Relation)</strong> – Data organized in rows & columns</li>
 <li><strong>Attribute</strong> – Column (field)</li>
 <li><strong>Tuple</strong> – Row (record)</li>
+<li><strong>DBMS</strong> – Database Management System: software to create, manage, query and secure databases. Provides query processor + developer interface.</li>
 </ul>
+
 <h3>Keys</h3>
 <ul>
-<li><strong>Primary Key</strong> – Uniquely identifies each record</li>
-<li><strong>Foreign Key</strong> – Links to primary key of another table (referential integrity)</li>
-<li><strong>Candidate Key</strong> – Any attribute that COULD be a primary key</li>
+<li><strong>Primary Key</strong> – Uniquely identifies each record. Cannot be NULL.</li>
+<li><strong>Foreign Key</strong> – Attribute in one table that references the primary key of another table.</li>
+<li><strong>Candidate Key</strong> – Any attribute that COULD serve as the primary key.</li>
+<li><strong>Composite Key</strong> – Primary key made of TWO or more attributes combined.</li>
 </ul>
+
+<h3>Data Integrity</h3>
+<div class="highlight-box">
+<strong>Entity Integrity:</strong> Every table must have a primary key, and it must be unique and NOT NULL.<br><br>
+<strong>Referential Integrity:</strong> A foreign key value must either match an existing primary key in the referenced table OR be NULL. You cannot delete a record if another table's foreign key references it.<br><br>
+<strong>Domain Integrity:</strong> Values in a column must be of the correct data type and within allowed range (e.g. Age must be an integer, not text).
+</div>
+
 <h3>Normalization</h3>
 <ul>
-<li><strong>1NF</strong> – No repeating groups, atomic values</li>
-<li><strong>2NF</strong> – 1NF + no partial dependencies (all non-key fields depend on WHOLE primary key)</li>
-<li><strong>3NF</strong> – 2NF + no transitive dependencies</li>
+<li><strong>1NF</strong> – No repeating groups, all values are atomic (indivisible)</li>
+<li><strong>2NF</strong> – 1NF + no <strong>partial dependencies</strong></li>
+<li><strong>3NF</strong> – 2NF + no <strong>transitive dependencies</strong></li>
 </ul>
-<h3>SQL Commands</h3>
+<div class="highlight-box">
+<strong>Partial Dependency:</strong> A non-key attribute depends on only PART of a composite primary key, not the whole key.<br>
+Example: Table (StudentID, CourseID, StudentName) → StudentName depends only on StudentID, not on (StudentID + CourseID). Fix: move StudentName to a separate Students table.<br><br>
+<strong>Transitive Dependency:</strong> A non-key attribute depends on ANOTHER non-key attribute instead of the primary key.<br>
+Example: Table (StudentID, DeptID, DeptName) → DeptName depends on DeptID, not on StudentID. Fix: move DeptID → DeptName to a separate Departments table.
+</div>
+
+<h3>SQL – DDL (Data Definition Language)</h3>
+<div class="highlight-box">
+<strong>CREATE TABLE:</strong><br>
+<code>CREATE TABLE Students (</code><br>
+<code>&nbsp;&nbsp;StudentID INT PRIMARY KEY,</code><br>
+<code>&nbsp;&nbsp;Name VARCHAR(50) NOT NULL,</code><br>
+<code>&nbsp;&nbsp;Age INT,</code><br>
+<code>&nbsp;&nbsp;DeptID INT,</code><br>
+<code>&nbsp;&nbsp;FOREIGN KEY (DeptID) REFERENCES Departments(DeptID)</code><br>
+<code>);</code><br><br>
+<strong>ALTER TABLE</strong> – Modify existing table structure:<br>
+<code>ALTER TABLE Students ADD Email VARCHAR(100);</code><br>
+<code>ALTER TABLE Students DROP COLUMN Age;</code><br><br>
+<strong>DROP TABLE</strong> – Delete entire table:<br>
+<code>DROP TABLE Students;</code>
+</div>
+
+<h3>SQL – DML (Data Manipulation Language)</h3>
 <ul>
-<li><strong>DDL:</strong> <code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>DROP TABLE</code></li>
-<li><strong>DML:</strong> <code>INSERT INTO</code>, <code>UPDATE</code>, <code>DELETE FROM</code></li>
-<li><strong>DQL:</strong> <code>SELECT ... FROM ... WHERE ... ORDER BY ... GROUP BY</code></li>
-</ul>`,
+<li><code>INSERT INTO Students (Name, Age) VALUES ('Ali', 17);</code></li>
+<li><code>UPDATE Students SET Age = 18 WHERE Name = 'Ali';</code></li>
+<li><code>DELETE FROM Students WHERE Age < 16;</code></li>
+</ul>
+
+<h3>SQL – DQL (Queries)</h3>
+<ul>
+<li><code>SELECT Name, Age FROM Students WHERE Age > 16 ORDER BY Age DESC;</code></li>
+<li><code>SELECT COUNT(*) FROM Students;</code> – Aggregate function</li>
+<li><code>SELECT DeptID, COUNT(*) FROM Students GROUP BY DeptID;</code></li>
+</ul>
+
+<h3>INNER JOIN</h3>
+<div class="highlight-box">
+Combines rows from two tables where the join condition is met (matching values in both tables).<br><br>
+<code>SELECT Students.Name, Departments.DeptName</code><br>
+<code>FROM Students</code><br>
+<code>INNER JOIN Departments</code><br>
+<code>ON Students.DeptID = Departments.DeptID;</code><br><br>
+Only rows where DeptID exists in BOTH tables are returned. Unmatched rows are excluded.
+</div>`,
 quiz:[
 {q:"A row in a database table is called a:",opts:["Attribute","Relation","Tuple","Field"],ans:2,exp:"Tuple = row/record in a relational database."},
 {q:"What does a Foreign Key do?",opts:["Uniquely identifies a record","Links to primary key of another table","Encrypts data","Sorts records"],ans:1,exp:"Foreign key creates a link between two tables by referencing another table's primary key."},
@@ -228,7 +280,16 @@ quiz:[
 {q:"Which SQL command retrieves data?",opts:["INSERT","UPDATE","SELECT","CREATE"],ans:2,exp:"SELECT is the DQL command used to query/retrieve data."},
 {q:"DROP TABLE is a ___ command.",opts:["DML","DQL","DDL","DCL"],ans:2,exp:"DROP TABLE is DDL (Data Definition Language) – it defines/modifies structure."},
 {q:"3NF removes:",opts:["Repeating groups","Partial dependencies","Transitive dependencies","All dependencies"],ans:2,exp:"3NF = 2NF + no transitive dependencies (non-key depending on non-key)."},
-{q:"Which SQL clause sorts results?",opts:["GROUP BY","WHERE","HAVING","ORDER BY"],ans:3,exp:"ORDER BY sorts the result set (ASC or DESC)."}
+{q:"Which SQL clause sorts results?",opts:["GROUP BY","WHERE","HAVING","ORDER BY"],ans:3,exp:"ORDER BY sorts the result set (ASC or DESC)."},
+{q:"Referential integrity ensures:",opts:["Primary keys are unique","Foreign key matches a valid primary key or is NULL","Data types are correct","Tables have names"],ans:1,exp:"Referential integrity = every foreign key value must match an existing primary key in the referenced table, or be NULL."},
+{q:"Entity integrity requires:",opts:["Foreign keys exist","Primary key is unique and NOT NULL","All values are integers","Tables are normalised"],ans:1,exp:"Entity integrity = every table has a primary key that is unique and cannot be NULL."},
+{q:"A partial dependency is when:",opts:["A non-key depends on another non-key","A non-key depends on part of a composite key","A key depends on a non-key","All attributes depend on the key"],ans:1,exp:"Partial dependency = a non-key attribute depends on only PART of a composite primary key."},
+{q:"A transitive dependency is when:",opts:["A non-key depends on another non-key","A key depends on a non-key","All fields depend on the primary key","Foreign key references primary key"],ans:0,exp:"Transitive dependency = non-key attribute A depends on non-key attribute B, instead of directly on the primary key."},
+{q:"INNER JOIN returns:",opts:["All rows from both tables","Only matching rows from both tables","All rows from the left table","Only unmatched rows"],ans:1,exp:"INNER JOIN returns only the rows where the join condition matches in BOTH tables."},
+{q:"ALTER TABLE is used to:",opts:["Delete a table","Query data","Modify table structure","Insert records"],ans:2,exp:"ALTER TABLE modifies existing table structure – add/drop columns, change data types."},
+{q:"Which defines a foreign key in CREATE TABLE?",opts:["PRIMARY KEY (col)","FOREIGN KEY (col) REFERENCES Table(col)","NOT NULL","UNIQUE"],ans:1,exp:"FOREIGN KEY (col) REFERENCES OtherTable(col) creates the referential link."},
+{q:"A composite key is:",opts:["A single unique column","Two or more columns forming the primary key","A foreign key","An index"],ans:1,exp:"Composite key = primary key made up of two or more attributes combined."},
+{q:"SELECT COUNT(*) is a:",opts:["DDL command","Join type","Aggregate function","Table constraint"],ans:2,exp:"COUNT(*) is an aggregate function that counts the number of rows."}
 ]},
 
 {id:"mem",icon:"💾",title:"Memory & Storage",notes:`
