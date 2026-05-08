@@ -203,14 +203,15 @@ quiz:[
 <li><strong>Attribute</strong> – Column (field)</li>
 <li><strong>Tuple</strong> – Row (record)</li>
 <li><strong>DBMS</strong> – Database Management System: software to create, manage, query and secure databases. Provides query processor + developer interface.</li>
+<li><strong>RDBMS Features:</strong> Relational DBMS uses tables linked by keys. Features include Data Integrity constraints, transaction management, concurrent access control, and data dictionaries.</li>
 </ul>
 
 <h3>Keys</h3>
 <ul>
-<li><strong>Primary Key</strong> – Uniquely identifies each record. Cannot be NULL.</li>
-<li><strong>Foreign Key</strong> – Attribute in one table that references the primary key of another table.</li>
+<li><strong>Primary Key</strong> – Uniquely identifies each record. Cannot be NULL. <code>PRIMARY KEY (col)</code></li>
+<li><strong>Foreign Key</strong> – Attribute in one table referencing the primary key of another. <code>FOREIGN KEY (col) REFERENCES Other(col)</code></li>
 <li><strong>Candidate Key</strong> – Any attribute that COULD serve as the primary key.</li>
-<li><strong>Composite Key</strong> – Primary key made of TWO or more attributes combined.</li>
+<li><strong>Composite Key</strong> – Primary key made of TWO or more attributes combined. <code>PRIMARY KEY (col1, col2)</code></li>
 </ul>
 
 <h3>Data Integrity</h3>
@@ -232,6 +233,13 @@ Example: Table (StudentID, CourseID, StudentName) → StudentName depends only o
 <strong>Transitive Dependency:</strong> A non-key attribute depends on ANOTHER non-key attribute instead of the primary key.<br>
 Example: Table (StudentID, DeptID, DeptName) → DeptName depends on DeptID, not on StudentID. Fix: move DeptID → DeptName to a separate Departments table.
 </div>
+
+<h3>SQL (Structured Query Language) Overview</h3>
+<ul>
+  <li><strong>DDL (Data Definition Language):</strong> Defines database structure. <code>CREATE TABLE</code>, <code>ALTER TABLE</code>, <code>DROP TABLE</code>.</li>
+  <li><strong>DML (Data Manipulation Language):</strong> Modifies the data inside tables. <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</li>
+  <li><strong>DQL (Data Query Language):</strong> Retrieves data. <code>SELECT ... FROM ... WHERE ... ORDER BY ... GROUP BY</code>.</li>
+</ul>
 
 <h3>SQL – DDL (Data Definition Language)</h3>
 <div class="highlight-box">
@@ -260,18 +268,25 @@ Example: Table (StudentID, DeptID, DeptName) → DeptName depends on DeptID, not
 <h3>SQL – DQL (Queries)</h3>
 <ul>
 <li><code>SELECT Name, Age FROM Students WHERE Age > 16 ORDER BY Age DESC;</code></li>
-<li><code>SELECT COUNT(*) FROM Students;</code> – Aggregate function</li>
+<li><strong>Aggregate Functions:</strong> Perform calculations on multiple rows.
+  <ul>
+    <li><code>COUNT(*)</code> – Counts number of rows</li>
+    <li><code>SUM(Age)</code> – Adds all values in a column</li>
+    <li><code>AVG(Age)</code> – Calculates average of a column</li>
+  </ul>
+</li>
 <li><code>SELECT DeptID, COUNT(*) FROM Students GROUP BY DeptID;</code></li>
 </ul>
 
 <h3>INNER JOIN</h3>
 <div class="highlight-box">
-Combines rows from two tables where the join condition is met (matching values in both tables).<br><br>
+An INNER JOIN combines records from two different tables when they have matching values in a common field (usually a Primary Key to Foreign Key relationship).<br><br>
+<strong>Analogy:</strong> If Table A has a list of students and their DeptID, and Table B has a list of Departments and their DeptID, an INNER JOIN matches them up so you can see the Student's name next to the actual Department's name, instead of just seeing a number (DeptID).<br><br>
 <code>SELECT Students.Name, Departments.DeptName</code><br>
 <code>FROM Students</code><br>
 <code>INNER JOIN Departments</code><br>
 <code>ON Students.DeptID = Departments.DeptID;</code><br><br>
-Only rows where DeptID exists in BOTH tables are returned. Unmatched rows are excluded.
+<em>Note: If a student does not belong to a department, or a department has no students, those rows are completely left out of the final result.</em>
 </div>`,
 quiz:[
 {q:"A row in a database table is called a:",opts:["Attribute","Relation","Tuple","Field"],ans:2,exp:"Tuple = row/record in a relational database."},
@@ -384,10 +399,27 @@ quiz:[
 <li><strong>Authentication</strong> – Passwords, biometrics, 2FA</li>
 </ul>
 <h3>Data Integrity</h3>
+<div class="highlight-box">
+<strong>Validation:</strong> Ensures data is sensible and reasonable before it is processed (done by computer).<br>
 <ul>
-<li><strong>Validation</strong> – Presence, Format, Length, Range, Type, Check Digit</li>
-<li><strong>Verification</strong> – Double entry, Visual check, Checksum, Parity check</li>
-</ul>`,
+  <li><strong>Presence check:</strong> Ensures a field is not left blank.</li>
+  <li><strong>Format check:</strong> Ensures data matches a specific pattern (e.g., DD/MM/YYYY).</li>
+  <li><strong>Length check:</strong> Ensures data is exactly or up to a certain number of characters (e.g., password must be 8 chars).</li>
+  <li><strong>Range check:</strong> Ensures data falls within an acceptable upper and lower bound (e.g., month between 1 and 12).</li>
+  <li><strong>Type check:</strong> Ensures data is of the correct data type (e.g., integer instead of text).</li>
+  <li><strong>Check digit:</strong> An extra digit appended to a number, calculated from the other digits, used to detect data entry errors (e.g., barcodes).</li>
+</ul>
+</div>
+
+<div class="highlight-box">
+<strong>Verification:</strong> Ensures data entered matches the original source (done by human or computer).<br>
+<ul>
+  <li><strong>Double entry:</strong> Data is entered twice and the computer compares both entries to ensure they match (e.g., "Confirm Password").</li>
+  <li><strong>Visual check:</strong> User manually compares entered data on screen with the original paper document.</li>
+  <li><strong>Checksum:</strong> A value calculated from a block of data sent alongside it. Receiver recalculates and compares to verify data wasn't corrupted during transmission.</li>
+  <li><strong>Parity check:</strong> An extra bit (parity bit) added to binary data to ensure the total number of 1s is either always even or always odd, detecting transmission errors.</li>
+</ul>
+</div>`,
 quiz:[
 {q:"A worm differs from a virus because it:",opts:["Needs a host file","Is less dangerous","Self-replicates without a host","Only affects hardware"],ans:2,exp:"Worms spread independently across networks without needing to attach to a host file."},
 {q:"Pharming involves:",opts:["Fake emails","DNS poisoning to redirect URLs","Physical theft","Brute force attacks"],ans:1,exp:"Pharming redirects users from legitimate websites to fake ones via DNS poisoning."},
@@ -526,6 +558,12 @@ e.g. 44,100 Hz × 16 bits × 3 sec = 2,116,800 bits = <strong>~265 KB</strong><b
 <strong>Sampling Resolution</strong> = bits/sample. More bits → more accurate amplitude.
 </div>
 
+<h3>Quantization Error</h3>
+<p>The difference between the original analogue sound wave's continuous amplitude and its recorded digital (quantized) value. Since digital values are discrete, the sampled value is often rounded to the nearest available level, causing a loss of exactness.</p>
+<ul>
+<li><strong>How to reduce it:</strong> Increase the <strong>sampling resolution</strong> (more bits per sample means more levels to choose from, meaning the rounded value is closer to the original).</li>
+</ul>
+
 <h3>Compression</h3>
 <ul>
 <li><strong>Lossless</strong> – Perfect reconstruction. RLE (Run Length Encoding), Huffman coding.</li>
@@ -540,6 +578,7 @@ quiz:[
 {q:"Bitmap file size depends on:",opts:["Only resolution","Only colour depth","Resolution × colour depth","File format only"],ans:2,exp:"Bitmap size = width × height × colour depth (bits per pixel)."},
 {q:"Sound file size = Sampling Rate × ___ × Duration",opts:["Colour depth","Frequency","Resolution (bits/sample)","Amplitude"],ans:2,exp:"Sound file size = sampling rate × sampling resolution (bits per sample) × duration."},
 {q:"Lossy compression:",opts:["Can perfectly reconstruct original","Permanently discards some data","Is always bigger","Uses RLE"],ans:1,exp:"Lossy permanently removes data for smaller size – original cannot be recovered."},
-{q:"An 800×600 bitmap with 8-bit colour depth has file size:",opts:["480,000 bytes","3,840,000 bits","3,840,000 bytes","480,000 bits"],ans:1,exp:"800×600×8 = 3,840,000 bits = 480,000 bytes (÷8)."}
+{q:"An 800×600 bitmap with 8-bit colour depth has file size:",opts:["480,000 bytes","3,840,000 bits","3,840,000 bytes","480,000 bits"],ans:1,exp:"800×600×8 = 3,840,000 bits = 480,000 bytes (÷8)."},
+{q:"What reduces quantization error when sampling sound?",opts:["Increasing sampling rate","Decreasing duration","Increasing sampling resolution","Using lossy compression"],ans:2,exp:"Increasing sampling resolution (bits/sample) provides more discrete levels, meaning the recorded value is closer to the original continuous analogue wave, thus reducing quantization error."}
 ]}
 ];
