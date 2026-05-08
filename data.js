@@ -552,10 +552,10 @@ e.g. 800×600 image, 24-bit colour = 800×600×24 = 11,520,000 bits = <strong>1.
 </div>
 <div class="highlight-box">
 <strong>📐 Sound File Size Formula:</strong><br>
-<code>File Size = Sampling Rate × Resolution × Duration</code><br>
+<code>File Size = Sampling Rate × Bit Depth (Resolution) × Duration</code><br>
 e.g. 44,100 Hz × 16 bits × 3 sec = 2,116,800 bits = <strong>~265 KB</strong><br><br>
 <strong>Sampling Rate</strong> = samples/second (Hz). Higher → better quality, bigger file.<br>
-<strong>Sampling Resolution</strong> = bits/sample. More bits → more accurate amplitude.
+<strong>Bit Depth (Sampling Resolution)</strong> = bits/sample. More bits → more accurate amplitude.
 </div>
 
 <h3>Quantization Error</h3>
